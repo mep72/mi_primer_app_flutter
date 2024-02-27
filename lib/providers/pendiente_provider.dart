@@ -33,4 +33,9 @@ class PendienteProvider extends ChangeNotifier {
     _pendientes.add(pendiente);
     notifyListeners();
   }
+
+  void eliminar(int index) {
+    _pendientes.removeAt(index);
+    notifyListeners();
+  }
 }

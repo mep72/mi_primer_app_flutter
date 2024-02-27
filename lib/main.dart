@@ -74,8 +74,12 @@ class PaginaPrincipal extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => DetallePendienteScreen(
-                index: -1,
+                index: PendienteModel.indiceVacio,
                 grabar: grabarPendiente,
+                pendienteModel: PendienteModel(
+                  descripcion: '',
+                  terminado: false,
+                ),
               ),
             ),
           );
@@ -86,32 +90,41 @@ class PaginaPrincipal extends StatelessWidget {
       body: ListView.builder(
         itemCount: pendienteProvider.pendientes.length,
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              var pendienteEditado =
-                  pendienteProvider.pendientes[index].copyWith(
-                terminado: !pendienteProvider.pendientes[index].terminado,
-              );
-              pendienteProvider.actualizaPendiente(index, pendienteEditado);
+          final pendiente = pendienteProvider.pendientes[index];
+          return Dismissible(
+            key: Key(pendiente.descripcion),
+            onDismissed: (direction) {
+              pendienteProvider.eliminar(index);
             },
-            child: Card(
-              child: ListTile(
-                leading: pendienteProvider.pendientes[index].terminado
-                    ? const Icon(Icons.check_box)
-                    : const Icon(Icons.check_box_outline_blank),
-                title: Text(pendienteProvider.pendientes[index].descripcion),
-                trailing: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetallePendienteScreen(
-                            index: index,
-                            grabar: grabarPendiente,
-                          ),
-                        ));
-                  },
-                  icon: const Icon(Icons.edit),
+            child: GestureDetector(
+              onTap: () {
+                var pendienteEditado =
+                    pendienteProvider.pendientes[index].copyWith(
+                  terminado: !pendienteProvider.pendientes[index].terminado,
+                );
+                pendienteProvider.actualizaPendiente(index, pendienteEditado);
+              },
+              child: Card(
+                child: ListTile(
+                  leading: pendienteProvider.pendientes[index].terminado
+                      ? const Icon(Icons.check_box)
+                      : const Icon(Icons.check_box_outline_blank),
+                  title: Text(pendienteProvider.pendientes[index].descripcion),
+                  trailing: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetallePendienteScreen(
+                              index: index,
+                              grabar: grabarPendiente,
+                              pendienteModel:
+                                  pendienteProvider.pendientes[index],
+                            ),
+                          ));
+                    },
+                    icon: const Icon(Icons.edit),
+                  ),
                 ),
               ),
             ),
@@ -127,7 +140,7 @@ class PaginaPrincipal extends StatelessWidget {
       context,
       listen: false,
     );
-    if (index == -1) {
+    if (index == PendienteModel.indiceVacio) {
       // crear un pendiente
       pendienteProvider.agregarPendiente(pendiente);
     } else {

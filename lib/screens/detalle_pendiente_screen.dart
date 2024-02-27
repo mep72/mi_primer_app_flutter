@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_primer_aplicacion/models/pendiente_model.dart';
 import 'package:mi_primer_aplicacion/providers/pendiente_provider.dart';
@@ -5,32 +6,38 @@ import 'package:provider/provider.dart';
 
 class DetallePendienteScreen extends StatefulWidget {
   final int index;
+  final PendienteModel pendienteModel;
   final Function(BuildContext context, int index, PendienteModel pendiente)
       grabar;
   const DetallePendienteScreen(
-      {super.key, required this.index, required this.grabar});
+      {super.key,
+      required this.index,
+      required this.grabar,
+      required this.pendienteModel});
 
   @override
   State<DetallePendienteScreen> createState() => _DetallePendienteScreenState();
 }
 
 class _DetallePendienteScreenState extends State<DetallePendienteScreen> {
-  bool _terminado = false;
   final TextEditingController _descripcionController = TextEditingController();
+  late PendienteModel _pendienteModel;
+
+  @override
+  void initState() {
+    _pendienteModel = widget.pendienteModel;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final pendienteProvider =
-        Provider.of<PendienteProvider>(context, listen: false);
-    PendienteModel pendienteEditado = widget.index >= 0
-        ? pendienteProvider.pendientes[widget.index]
-        : PendienteModel(descripcion: '', terminado: false);
-
-    _descripcionController.text = pendienteEditado.descripcion;
+    _descripcionController.text = _pendienteModel.descripcion;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalle del pendiente'),
+        title: widget.index == PendienteModel.indiceVacio
+            ? const Text('Pendiente nuevo')
+            : Text('Detalle del pendiente # ${widget.index + 1}'),
       ),
       body: Column(
         children: [
@@ -47,16 +54,28 @@ class _DetallePendienteScreenState extends State<DetallePendienteScreen> {
                     border: OutlineInputBorder(),
                     labelText: 'Descripción del pendiente',
                   ),
+                  onChanged: (value) {
+                    if (kDebugMode) {
+                      print('Valor capturado: $value');
+                    }
+                    setState(() {
+                      _pendienteModel = _pendienteModel.copyWith(
+                        descripcion: value,
+                      );
+                    });
+                  },
                 ),
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      _terminado = !_terminado;
+                      _pendienteModel = _pendienteModel.copyWith(
+                        terminado: !_pendienteModel.terminado,
+                      );
                     });
                   },
                   child: Row(
                     children: [
-                      _terminado
+                      _pendienteModel.terminado
                           ? const Icon(Icons.check_box)
                           : const Icon(Icons.check_box_outline_blank),
                       const Text('Terminado')
@@ -66,10 +85,7 @@ class _DetallePendienteScreenState extends State<DetallePendienteScreen> {
                 TextButton(
                   onPressed: () {
                     PendienteModel pendiente;
-                    pendiente = PendienteModel(
-                      descripcion: _descripcionController.text,
-                      terminado: _terminado,
-                    );
+                    pendiente = _pendienteModel;
                     widget.grabar(context, widget.index, pendiente);
                     Navigator.pop(context);
                   },

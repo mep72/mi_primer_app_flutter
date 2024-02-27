@@ -1,6 +1,7 @@
 class PendienteModel {
   final String descripcion;
   final bool terminado;
+  static int indiceVacio = -99;
 
   PendienteModel({
     required this.descripcion,
@@ -11,6 +12,13 @@ class PendienteModel {
     return PendienteModel(
       descripcion: descripcion ?? this.descripcion,
       terminado: terminado ?? this.terminado,
+    );
+  }
+
+  static PendienteModel vacio() {
+    return PendienteModel(
+      descripcion: '(SIN)',
+      terminado: false,
     );
   }
 }
