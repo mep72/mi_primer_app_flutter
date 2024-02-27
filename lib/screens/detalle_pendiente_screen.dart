@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_primer_aplicacion/models/pendiente_model.dart';
-import 'package:mi_primer_aplicacion/providers/pendiente_provider.dart';
-import 'package:provider/provider.dart';
 
 class DetallePendienteScreen extends StatefulWidget {
   final int index;
