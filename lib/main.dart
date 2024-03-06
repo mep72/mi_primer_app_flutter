@@ -6,7 +6,9 @@ import 'package:mi_primer_aplicacion/widgets/main_bottom_navigation_bar.dart';
 import 'package:mi_primer_aplicacion/widgets/main_drawer.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(ChangeNotifierProvider(
     create: (context) => PendienteProvider(),
     child: const MyApp(),
@@ -54,7 +56,7 @@ class PaginaPrincipal extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // Add your onPressed code here!
+              pendienteProvider.cargaPendientes();
             },
             icon: const Icon(Icons.search),
           ),
@@ -77,6 +79,7 @@ class PaginaPrincipal extends StatelessWidget {
                 index: PendienteModel.indiceVacio,
                 grabar: grabarPendiente,
                 pendienteModel: PendienteModel(
+                  id: PendienteModel.indiceVacio,
                   descripcion: '',
                   terminado: false,
                 ),
