@@ -48,7 +48,9 @@ class PendienteProvider extends ChangeNotifier {
   }
 
   void eliminar(int index) {
+    final pendiente = _pendientes[index];
     _pendientes.removeAt(index);
+    _pendientesData.deletePendiente(pendiente);
     notifyListeners();
   }
 }

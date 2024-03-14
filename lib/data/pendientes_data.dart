@@ -22,7 +22,7 @@ class PendientesData {
       onCreate: (db, version) {
         // Run the CREATE TABLE statement on the database.
         return db.execute(
-          'CREATE TABLE pendiente(id INTEGER PRIMARY KEY, descripcion TEXT, terminado INTEGER)',
+          'CREATE TABLE pendiente(id INTEGER PRIMARY KEY AUTOINCREMENT, descripcion TEXT, terminado INTEGER)',
         );
       },
       // Set the version. This executes the onCreate function and provides a
@@ -40,6 +40,17 @@ class PendientesData {
       'pendiente',
       pendiente.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> deletePendiente(PendienteModel pendiente) async {
+    await _preparaDatabase();
+    final db = await _database;
+
+    await db!.delete(
+      'pendiente',
+      where: 'id = ?',
+      whereArgs: [pendiente.id],
     );
   }
 

@@ -35,7 +35,7 @@ class _DetallePendienteScreenState extends State<DetallePendienteScreen> {
       appBar: AppBar(
         title: widget.index == PendienteModel.indiceVacio
             ? const Text('Pendiente nuevo')
-            : Text('Detalle del pendiente # ${widget.index + 1}'),
+            : Text('Detalle del pendiente # ${widget.pendienteModel.id}'),
       ),
       body: Column(
         children: [

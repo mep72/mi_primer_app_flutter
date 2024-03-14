@@ -28,7 +28,7 @@ class PendienteModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+//      'id': id,
       'descripcion': descripcion,
       'terminado': terminado ? 1 : 0,
     };
