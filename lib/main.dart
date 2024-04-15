@@ -6,8 +6,15 @@ import 'package:mi_primer_aplicacion/widgets/main_bottom_navigation_bar.dart';
 import 'package:mi_primer_aplicacion/widgets/main_drawer.dart';
 import 'package:provider/provider.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(ChangeNotifierProvider(
     create: (context) => PendienteProvider(),
@@ -58,7 +65,7 @@ class PaginaPrincipal extends StatelessWidget {
             onPressed: () {
               pendienteProvider.cargaPendientes();
             },
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.refresh),
           ),
           IconButton(
             onPressed: () {

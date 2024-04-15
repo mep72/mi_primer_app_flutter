@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "514437046472",
+    "project_id": "mi-primer-app-flutter",
+    "storage_bucket": "mi-primer-app-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514437046472:android:2ceda4f1015416c5c205fd",
+        "android_client_info": {
+          "package_name": "com.example.mi_primer_aplicacion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_aYlnYA0x3uHGgNAqFl11NG1YjufELPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
