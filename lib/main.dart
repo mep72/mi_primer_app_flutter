@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mi_primer_aplicacion/models/pendiente_model.dart';
 import 'package:mi_primer_aplicacion/providers/pendiente_provider.dart';
+import 'package:mi_primer_aplicacion/providers/usuario_provider.dart';
 import 'package:mi_primer_aplicacion/screens/detalle_pendiente_screen.dart';
+import 'package:mi_primer_aplicacion/screens/login_screen.dart';
 import 'package:mi_primer_aplicacion/widgets/main_bottom_navigation_bar.dart';
 import 'package:mi_primer_aplicacion/widgets/main_drawer.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +18,11 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => PendienteProvider(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => PendienteProvider()),
+      ChangeNotifierProvider(create: (context) => UsuarioProvider()),
+    ],
     child: const MyApp(),
   ));
 }
@@ -28,6 +33,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final usuarioProvider = Provider.of<UsuarioProvider>(context);
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -36,7 +43,9 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const PaginaPrincipal(),
+      home: usuarioProvider.sesionIniciada
+          ? const PaginaPrincipal()
+          : const LoginScreen(),
     );
   }
 }
